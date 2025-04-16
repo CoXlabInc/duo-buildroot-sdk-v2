@@ -78,7 +78,7 @@ static netdev_tx_t morse_mon_xmit(struct sk_buff *skb, struct net_device *dev)
 
 static const struct net_device_ops morse_mon_ops = {
 	.ndo_start_xmit = morse_mon_xmit,
-#if KERNEL_VERSION(5, 10, 11) > LINUX_VERSION_CODE
+#if KERNEL_VERSION(5, 10, 0) > LINUX_VERSION_CODE
 	.ndo_change_mtu = eth_change_mtu,
 #endif
 	.ndo_set_mac_address = eth_mac_addr,
