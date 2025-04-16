@@ -271,6 +271,7 @@ struct mmc_card {
 #define MMC_QUIRK_TRIM_BROKEN	(1<<12)		/* Skip trim */
 #define MMC_QUIRK_BROKEN_HPI	(1<<13)		/* Disable broken HPI support */
 #define MMC_QUIRK_EXTRA_LONG_READ_TIME (1<<14)	/* For Micron eMMC need very long read time after power loss boot */
+#define MMC_QUIRK_NO_18V	(1<<15)		/* Ignore voltage negotiation and don't use 1.8v */
 
 	bool			reenable_cmdq;	/* Re-enable Command Queue */
 

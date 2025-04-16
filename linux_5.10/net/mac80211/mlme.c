@@ -66,6 +66,14 @@ MODULE_PARM_DESC(beacon_loss_count,
 		 "Number of beacon intervals before we decide beacon was lost.");
 
 /*
+ * Number of beacon intervals to wait for a beacon at association.
+ */
+static int beacon_wait_count = 1;
+module_param(beacon_wait_count, int, 0644);
+MODULE_PARM_DESC(beacon_wait_count,
+		 "Number of beacon intervals to wait for a beacon at association.");
+
+/*
  * Time the connection can be idle before we probe
  * it to see if we can still talk to the AP.
  */
@@ -1186,6 +1194,7 @@ static void ieee80211_chswitch_work(struct work_struct *work)
 		struct ieee80211_supported_band *sband = NULL;
 		struct sta_info *mgd_sta = NULL;
 		enum ieee80211_sta_rx_bandwidth bw = IEEE80211_STA_RX_BW_20;
+		bool update_drv_rc = false;
 
 		/*
 		 * with multi-vif csa driver may call ieee80211_csa_finish()
@@ -1228,6 +1237,7 @@ static void ieee80211_chswitch_work(struct work_struct *work)
 			mgd_sta = sta_info_get(sdata, ifmgd->bssid);
 			sband =
 				local->hw.wiphy->bands[sdata->csa_chandef.chan->band];
+			update_drv_rc = true;
 		}
 
 		if (sdata->vif.bss_conf.chandef.width >
@@ -1247,8 +1257,8 @@ static void ieee80211_chswitch_work(struct work_struct *work)
 			goto out;
 		}
 
-		if (sdata->vif.bss_conf.chandef.width <
-		    sdata->csa_chandef.width) {
+		if ((sdata->vif.bss_conf.chandef.width <
+		    sdata->csa_chandef.width) || update_drv_rc) {
 			mgd_sta->sta.bandwidth = bw;
 			rate_control_rate_update(local, sband, mgd_sta,
 						 IEEE80211_RC_BW_CHANGED);
@@ -1386,6 +1396,24 @@ ieee80211_sta_process_chanswitch(struct ieee80211_sub_if_data *sdata,
 
 	current_band = cbss->channel->band;
 	bss = (void *)cbss->priv;
+
+	if (elems->wide_bw_chansw_ie) {
+		struct ieee80211_supported_band *sband = ieee80211_get_sband(sdata);
+
+		/* if wide bw is included then we are moving to HT or VHT channels, so enable modes accordingly */
+		if (sband->ht_cap.ht_supported && (ifmgd->flags &
+						(IEEE80211_STA_DISABLE_HT | IEEE80211_STA_DISABLE_40MHZ))) {
+			ifmgd->flags &= ~(IEEE80211_STA_DISABLE_HT | IEEE80211_STA_DISABLE_40MHZ);
+			sdata_info(sdata,"mac80211: %s: updated if flags=0x%x\n",__func__, ifmgd->flags);
+		}
+
+		if ((elems->wide_bw_chansw_ie->new_channel_width > IEEE80211_VHT_CHANWIDTH_USE_HT) &&
+							 sband->vht_cap.vht_supported &&
+						(ifmgd->flags & (IEEE80211_STA_DISABLE_VHT | IEEE80211_STA_DISABLE_160MHZ))) {
+			ifmgd->flags &= ~(IEEE80211_STA_DISABLE_VHT | IEEE80211_STA_DISABLE_160MHZ);
+			sdata_info(sdata,"mac80211: %s: updated vht caps, if flags=0x%x\n",__func__, ifmgd->flags);
+		}
+	}
 	res = ieee80211_parse_ch_switch_ie(sdata, elems, current_band,
 					   bss->vht_cap_info,
 					   ifmgd->flags,
@@ -1511,9 +1539,9 @@ ieee80211_sta_process_chanswitch(struct ieee80211_sub_if_data *sdata,
 	/* channel switch handled in software */
 	if (csa_ie.count <= 1)
 		ieee80211_queue_work(&local->hw, &ifmgd->chswitch_work);
-	else
+	else /* consider short beacons time also */
 		mod_timer(&ifmgd->chswitch_timer,
-			  TU_TO_EXP_TIME((csa_ie.count - 1) *
+			  TU_TO_EXP_TIME((csa_ie.count - 1) * sdata->vif.bss_conf.dtim_period *
 					 cbss->beacon_interval));
 	return;
  drop_connection:
@@ -5712,11 +5740,11 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
 	    !beacon_ies) {
 		/*
 		 * Wait up to one beacon interval ...
-		 * should this be more if we miss one?
+		 * Beacon periods to wait can be set via modparam
 		 */
 		sdata_info(sdata, "waiting for beacon from %pM\n",
 			   ifmgd->bssid);
-		assoc_data->timeout = TU_TO_EXP_TIME(req->bss->beacon_interval);
+		assoc_data->timeout = TU_TO_EXP_TIME(beacon_wait_count * req->bss->beacon_interval);
 		assoc_data->timeout_started = true;
 		assoc_data->need_beacon = true;
 	} else if (beacon_ies) {
