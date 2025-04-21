@@ -335,6 +335,22 @@
 	};
 
 	wifisd:wifi-sd@4320000 {
+		compatible = "cvitek,cv181x-sdio";
+		bus-width = <4>;
+		reg = <0x0 0x4320000 0x0 0x1000>;
+		reg_names = "core_mem";
+		src-frequency = <375000000>;
+		min-frequency = <400000>;
+		max-frequency = <50000000>;
+		64_addressing;
+		reset_tx_rx_phy;
+		non-removable;
+		pll_index = <0x7>;
+		pll_reg = <0x300207C>;
+		no-mmc;
+		no-sd;
+		status = "disabled";
+
 		interrupts = <38 IRQ_TYPE_LEVEL_HIGH>;
 		interrupt-parent = <&plic0>;
 	};

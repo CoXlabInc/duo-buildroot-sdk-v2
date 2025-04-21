@@ -21,7 +21,7 @@
 };
 
 &spi2 {
-	status = "okay";
+	status = "disabled";
 
 	/delete-node/ spidev@0;
 
@@ -50,3 +50,27 @@
 	status = "okay";
 };
 
+&wifisd {
+	cap-sd-highspeed;
+	cap-mmc-highspeed;
+	non-removable;
+	disable-wp;
+	cap-sdio-irq;
+
+	status = "okay";
+
+	mm6108_sdio: mm6108_sdio@0 {
+		compatible = "morse,mm610x";
+		reset-gpios = <&porta 22 GPIO_ACTIVE_LOW>;
+		power-gpios = <&porta 24 GPIO_ACTIVE_HIGH>, <&porta 23 GPIO_ACTIVE_HIGH>;
+		status = "okay";
+		reg = <2>;
+		bus-width = <4>;
+	};
+};
+
+&wifi_pin {
+	compatible = "cvitek,wifi-pin";
+/*	poweron-gpio = <&porta 22 GPIO_ACTIVE_LOW>;*/
+	wakeup-gpio = <&porta 24 GPIO_ACTIVE_HIGH>;
+};
