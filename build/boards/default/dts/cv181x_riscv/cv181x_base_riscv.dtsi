@@ -341,7 +341,7 @@
 		reg_names = "core_mem";
 		src-frequency = <375000000>;
 		min-frequency = <400000>;
-		max-frequency = <50000000>;
+		max-frequency = <25000000>;
 		64_addressing;
 		reset_tx_rx_phy;
 		non-removable;
