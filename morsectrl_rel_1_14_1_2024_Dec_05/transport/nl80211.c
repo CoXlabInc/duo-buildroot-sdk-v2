@@ -7,10 +7,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <net/if.h>
 #include <netlink/genl/genl.h>
 #include <netlink/genl/ctrl.h>
 #include <netlink/genl/family.h>
-#include <net/if.h>
 #include <netlink/attr.h>
 #include <fcntl.h>
 

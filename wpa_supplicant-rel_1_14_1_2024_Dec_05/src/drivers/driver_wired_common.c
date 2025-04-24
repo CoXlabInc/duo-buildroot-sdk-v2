@@ -9,13 +9,13 @@
 
 #include "includes.h"
 
+#include <net/if.h>
 #include "common.h"
 #include "eloop.h"
 #include "driver.h"
 #include "driver_wired_common.h"
 
 #include <sys/ioctl.h>
-#include <net/if.h>
 #ifdef __linux__
 #include <netpacket/packet.h>
 #include <net/if_arp.h>

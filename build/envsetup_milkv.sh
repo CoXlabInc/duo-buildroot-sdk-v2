@@ -598,6 +598,127 @@ function prepare_git_hook()
    fi
 }
 
+function build_morsemicro()
+{
+    print_notice "Run ${FUNCNAME[0]}() $1 function"
+
+    pushd wpa_supplicant-rel_1_14_1_2024_Dec_05
+    if [ ! -f wpa_supplicant/.config ]; then
+        cp wpa_supplicant/defconfig wpa_supplicant/.config
+    fi
+    export MM_BUILD_STAGING=$TOP_DIR/buildroot-2024.02/output/milkv-duo256m-musl-riscv64-sd/host/riscv64-buildroot-linux-musl/sysroot
+    CC=riscv64-unknown-linux-musl-gcc\
+      CROSS_COMPILE=$TOP_DIR/buildroot-2024.02/output/milkv-duo256m-musl-riscv64-sd/host/bin/riscv64-unknown-linux-musl-\
+      PKG_CONFIG_PATH="$MM_BUILD_STAGING/usr/lib/pkgconfig"\
+      PKG_CONFIG_LIBDIR="$MM_BUILD_STAGING/usr/lib/pkgconfig"\
+      PKG_CONFIG_SYSROOT_DIR="$MM_BUILD_STAGING"\
+      CFLAGS="-I $MM_BUILD_STAGING/usr/include -Wno-error=deprecated-declarations -Wno-error=sign-compare"\
+      LDFLAGS="-L $MM_BUILD_STAGING/usr/lib/"\
+      DESTDIR="$MM_BUILD_STAGING"\
+      BINDIR=/usr/sbin\
+      LIBS="-lnl-3 -lm -lpthread -lcrypto -lssl"\
+      V=0\
+      make MORSE_VERSION=rel_1_14_1_2024_Dec_05 -C wpa_supplicant/
+    test "$?" -ne 0 && popd && return 1
+    popd
+
+    pushd hostapd-rel_1_14_1_2024_Dec_05
+    if [ ! -f hostapd/.config ]; then
+        cp hostapd/defconfig hostapd/.config
+    fi
+    export MM_BUILD_STAGING=$TOP_DIR/buildroot-2024.02/output/milkv-duo256m-musl-riscv64-sd/host/riscv64-buildroot-linux-musl/sysroot
+    CC=riscv64-unknown-linux-musl-gcc\
+      CROSS_COMPILE=$TOP_DIR/buildroot-2024.02/output/milkv-duo256m-musl-riscv64-sd/host/bin/riscv64-unknown-linux-musl-\
+      PKG_CONFIG_PATH="$MM_BUILD_STAGING/usr/lib/pkgconfig"\
+      PKG_CONFIG_LIBDIR="$MM_BUILD_STAGING/usr/lib/pkgconfig"\
+      PKG_CONFIG_SYSROOT_DIR="$MM_BUILD_STAGING"\
+      CFLAGS="-I $MM_BUILD_STAGING/usr/include -Wno-error=deprecated-declarations -Wno-error=sign-compare"\
+      LDFLAGS="-L $MM_BUILD_STAGING/usr/lib/"\
+      DESTDIR="$MM_BUILD_STAGING"\
+      BINDIR=/usr/sbin\
+      LIBS="-lnl-3 -lm -lpthread -lcrypto -lssl"\
+      V=0\
+      make MORSE_VERSION=rel_1_14_1_2024_Dec_05 -C hostapd/
+    test "$?" -ne 0 && popd && return 1
+    popd
+
+    pushd morsectrl_rel_1_14_1_2024_Dec_05
+    export MM_BUILD_STAGING=$TOP_DIR/buildroot-2024.02/output/milkv-duo256m-musl-riscv64-sd/host/riscv64-buildroot-linux-musl/sysroot
+    CC=riscv64-unknown-linux-musl-gcc\
+      CROSS_COMPILE=$TOP_DIR/buildroot-2024.02/output/milkv-duo256m-musl-riscv64-sd/host/bin/riscv64-unknown-linux-musl-\
+      PKG_CONFIG_PATH="$MM_BUILD_STAGING/usr/lib/pkgconfig"\
+      PKG_CONFIG_LIBDIR="$MM_BUILD_STAGING/usr/lib/pkgconfig"\
+      PKG_CONFIG_SYSROOT_DIR="$MM_BUILD_STAGING"\
+      CFLAGS="-I $MM_BUILD_STAGING/usr/include -I $MM_BUILD_STAGING/usr/include/libnl3/ -Wno-parentheses"\
+      LDFLAGS="-L $MM_BUILD_STAGING/usr/lib/"\
+      LIBS="-lnl-3 -lm -lpthread -lcrypto -lssl"\
+      V=0\
+      make CONFIG_MORSE_TRANS_NL80211=1
+    test "$?" -ne 0 && popd && return 1
+    popd
+
+    pushd morsemicro_driver_rel_1_14_1_2024_Dec_05
+    make KERNEL_SRC=../linux_5.10/build/sg2002_milkv_duo256m_musl_riscv64_sd/ CONFIG_WLAN_VENDOR_MORSE=m CONFIG_MORSE_SDIO=y CONFIG_MORSE_USER_ACCESS=y CONFIG_MORSE_VENDOR_COMMAND=y CONFIG_MORSE_DEBUG_MASK=1
+    test "$?" -ne 0 && popd && return 1
+    popd
+
+}
+
+function pack_morsemicro()
+{
+    print_notice "Run ${FUNCNAME[0]}() $1 function"
+
+    cp morsemicro_driver_rel_1_14_1_2024_Dec_05/morse.ko "$SYSTEM_OUT_DIR"/ko
+    cp morsemicro_driver_rel_1_14_1_2024_Dec_05/dot11ah/dot11ah.ko "$SYSTEM_OUT_DIR"/ko
+
+    install -d "$BR_ROOTFS_DIR"/usr/sbin/
+    cp wpa_supplicant-rel_1_14_1_2024_Dec_05/wpa_supplicant/wpa_supplicant_s1g "$BR_ROOTFS_DIR"/usr/sbin/
+    cp wpa_supplicant-rel_1_14_1_2024_Dec_05/wpa_supplicant/wpa_cli_s1g "$BR_ROOTFS_DIR"/usr/sbin/
+    cp wpa_supplicant-rel_1_14_1_2024_Dec_05/wpa_supplicant/wpa_passphrase_s1g "$BR_ROOTFS_DIR"/usr/sbin/
+
+    install -d "$BR_ROOTFS_DIR"/var/run/
+    install -c -m 600 wpa_supplicant-rel_1_14_1_2024_Dec_05/wpa_supplicant/wpa_supplicant.conf "$BR_ROOTFS_DIR"/var/run/wpa_supplicant.conf
+
+    install -d "$BR_ROOTFS_DIR"/root/
+    install -c -m 755 runtime-scripts/resize.sh "$BR_ROOTFS_DIR"/root/
+    install -c -m 755 runtime-scripts/start-halow.sh "$BR_ROOTFS_DIR"/root/
+
+    cp hostapd-rel_1_14_1_2024_Dec_05/hostapd/hostapd_s1g "$BR_ROOTFS_DIR"/usr/sbin/
+    cp hostapd-rel_1_14_1_2024_Dec_05/hostapd/hostapd_cli_s1g "$BR_ROOTFS_DIR"/usr/sbin/
+
+    install -d "$BR_ROOTFS_DIR"/usr/bin/
+    cp morsectrl_rel_1_14_1_2024_Dec_05/morsectrl "$BR_ROOTFS_DIR"/usr/bin/
+    cp morsectrl_rel_1_14_1_2024_Dec_05/morse_cli "$BR_ROOTFS_DIR"/usr/bin/
+
+    install -d "$BR_ROOTFS_DIR"/lib/firmware/
+    install -c -m 644 morsemicro_fwbin/*.bin "$BR_ROOTFS_DIR"/lib/firmware/
+    ln -sf /lib/firmware/bcf_mf08651_us.bin "$BR_ROOTFS_DIR"/lib/firmware/bcf_boardtype_0801.bin
+    ln -sf /lib/firmware/bcf_mf10220.bin "$BR_ROOTFS_DIR"/lib/firmware/bcf_default.bin
+}
+
+function clean_morsemicro()
+{
+    print_notice "Run ${FUNCNAME[0]}() $1 function"
+
+    pushd morsemicro_driver_rel_1_14_1_2024_Dec_05
+    make clean
+    popd
+
+    pushd wpa_supplicant-rel_1_14_1_2024_Dec_05
+    make clean -C wpa_supplicant
+    rm .config
+    popd
+
+    pushd hostapd-rel_1_14_1_2024_Dec_05
+    make clean -C hostapd
+    rm .config
+    popd
+
+    pushd morsectrl_rel_1_14_1_2024_Dec_05
+    make clean
+    popd
+}
+
 # shellcheck disable=SC2120
 function build_all()
 {(
@@ -617,6 +738,8 @@ function build_all()
     fi
     #build_pqtool_server || return $?
   fi
+  build_morsemicro || return $?
+  pack_morsemicro || return $?
   pack_cfg || return $?
   pack_rootfs || return $?
   pack_data || return $?
