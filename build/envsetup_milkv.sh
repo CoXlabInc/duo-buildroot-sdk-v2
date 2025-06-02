@@ -602,7 +602,7 @@ function build_morsemicro()
 {
     print_notice "Run ${FUNCNAME[0]}() $1 function"
 
-    pushd wpa_supplicant-rel_1_14_1_2024_Dec_05
+    pushd hostap
     if [ ! -f wpa_supplicant/.config ]; then
         cp wpa_supplicant/defconfig wpa_supplicant/.config
     fi
@@ -620,9 +620,7 @@ function build_morsemicro()
       V=0\
       make MORSE_VERSION=rel_1_14_1_2024_Dec_05 -C wpa_supplicant/
     test "$?" -ne 0 && popd && return 1
-    popd
 
-    pushd hostapd-rel_1_14_1_2024_Dec_05
     if [ ! -f hostapd/.config ]; then
         cp hostapd/defconfig hostapd/.config
     fi
@@ -657,7 +655,7 @@ function build_morsemicro()
     test "$?" -ne 0 && popd && return 1
     popd
 
-    pushd morsemicro_driver_rel_1_14_1_2024_Dec_05
+    pushd morse_driver
     make KERNEL_SRC=../linux_5.10/build/sg2002_milkv_duo256m_musl_riscv64_sd/ CONFIG_WLAN_VENDOR_MORSE=m CONFIG_MORSE_SDIO=y CONFIG_MORSE_USER_ACCESS=y CONFIG_MORSE_VENDOR_COMMAND=y CONFIG_MORSE_DEBUG_MASK=1
     test "$?" -ne 0 && popd && return 1
     popd
@@ -668,23 +666,23 @@ function pack_morsemicro()
 {
     print_notice "Run ${FUNCNAME[0]}() $1 function"
 
-    cp morsemicro_driver_rel_1_14_1_2024_Dec_05/morse.ko "$SYSTEM_OUT_DIR"/ko
-    cp morsemicro_driver_rel_1_14_1_2024_Dec_05/dot11ah/dot11ah.ko "$SYSTEM_OUT_DIR"/ko
+    cp morse_driver/morse.ko "$SYSTEM_OUT_DIR"/ko
+    cp morse_driver/dot11ah/dot11ah.ko "$SYSTEM_OUT_DIR"/ko
 
     install -d "$BR_ROOTFS_DIR"/usr/sbin/
-    cp wpa_supplicant-rel_1_14_1_2024_Dec_05/wpa_supplicant/wpa_supplicant_s1g "$BR_ROOTFS_DIR"/usr/sbin/
-    cp wpa_supplicant-rel_1_14_1_2024_Dec_05/wpa_supplicant/wpa_cli_s1g "$BR_ROOTFS_DIR"/usr/sbin/
-    cp wpa_supplicant-rel_1_14_1_2024_Dec_05/wpa_supplicant/wpa_passphrase_s1g "$BR_ROOTFS_DIR"/usr/sbin/
+    cp hostap/wpa_supplicant/wpa_supplicant_s1g "$BR_ROOTFS_DIR"/usr/sbin/
+    cp hostap/wpa_supplicant/wpa_cli_s1g "$BR_ROOTFS_DIR"/usr/sbin/
+    cp hostap/wpa_supplicant/wpa_passphrase_s1g "$BR_ROOTFS_DIR"/usr/sbin/
 
     install -d "$BR_ROOTFS_DIR"/var/run/
-    install -c -m 600 wpa_supplicant-rel_1_14_1_2024_Dec_05/wpa_supplicant/wpa_supplicant.conf "$BR_ROOTFS_DIR"/var/run/wpa_supplicant.conf
+    install -c -m 600 hostap/wpa_supplicant/wpa_supplicant.conf "$BR_ROOTFS_DIR"/var/run/wpa_supplicant.conf
 
     install -d "$BR_ROOTFS_DIR"/root/
     install -c -m 755 runtime-scripts/resize.sh "$BR_ROOTFS_DIR"/root/
     install -c -m 755 runtime-scripts/start-halow.sh "$BR_ROOTFS_DIR"/root/
 
-    cp hostapd-rel_1_14_1_2024_Dec_05/hostapd/hostapd_s1g "$BR_ROOTFS_DIR"/usr/sbin/
-    cp hostapd-rel_1_14_1_2024_Dec_05/hostapd/hostapd_cli_s1g "$BR_ROOTFS_DIR"/usr/sbin/
+    cp hostap/hostapd/hostapd_s1g "$BR_ROOTFS_DIR"/usr/sbin/
+    cp hostap/hostapd/hostapd_cli_s1g "$BR_ROOTFS_DIR"/usr/sbin/
 
     install -d "$BR_ROOTFS_DIR"/usr/bin/
     cp morsectrl_rel_1_14_1_2024_Dec_05/morsectrl "$BR_ROOTFS_DIR"/usr/bin/
@@ -700,18 +698,15 @@ function clean_morsemicro()
 {
     print_notice "Run ${FUNCNAME[0]}() $1 function"
 
-    pushd morsemicro_driver_rel_1_14_1_2024_Dec_05
+    pushd morse_driver
     make clean
     popd
 
-    pushd wpa_supplicant-rel_1_14_1_2024_Dec_05
+    pushd hostap
     make clean -C wpa_supplicant
-    rm .config
-    popd
-
-    pushd hostapd-rel_1_14_1_2024_Dec_05
+    rm wpa_supplicant/.config
     make clean -C hostapd
-    rm .config
+    rm hostapd/.config
     popd
 
     pushd morsectrl_rel_1_14_1_2024_Dec_05

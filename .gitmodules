@@ -1,0 +1,6 @@
+[submodule "hostap"]
+	path = hostap
+	url = https://github.com/CoXlabInc/hostap.git
+[submodule "morse_driver"]
+	path = morse_driver
+	url = https://github.com/CoXlabInc/morse_driver.git
