@@ -179,6 +179,54 @@ void CVI_TDL_FreeCpp(cvtdl_clip_feature *clip_meta) {
   clip_meta->feature_dim = 0;
 }
 
+void CVI_TDL_FreeCpp(cvtdl_tokens *tokens_meta) {
+  if (tokens_meta->input_ids != NULL) {
+    for (int i = 0; i < tokens_meta->sentences_num; i++) {
+      if (tokens_meta->input_ids[i] != NULL) {
+        free(tokens_meta->input_ids[i]);
+        tokens_meta->input_ids[i] = NULL;
+      }
+    }
+    free(tokens_meta->input_ids);
+    tokens_meta->input_ids = NULL;
+  }
+
+  if (tokens_meta->attention_mask != NULL) {
+    for (int i = 0; i < tokens_meta->sentences_num; i++) {
+      if (tokens_meta->attention_mask[i] != NULL) {
+        free(tokens_meta->attention_mask[i]);
+        tokens_meta->attention_mask[i] = NULL;
+      }
+    }
+    free(tokens_meta->attention_mask);
+    tokens_meta->attention_mask = NULL;
+  }
+
+  if (tokens_meta->text != NULL) {
+    for (int i = 0; i < tokens_meta->sentences_num; i++) {
+      if (tokens_meta->text[i] != NULL) {
+        free(tokens_meta->text[i]);
+        tokens_meta->text[i] = NULL;
+      }
+    }
+    free(tokens_meta->text);
+    tokens_meta->text = NULL;
+  }
+
+  tokens_meta->max_length = 0;
+  tokens_meta->sentences_num = 0;
+}
+
+void CVI_TDL_FreeCpp(cvtdl_image_embeds *embeds_meta) {
+  if (embeds_meta->images_embeds != NULL) {
+    free(embeds_meta->images_embeds);
+    embeds_meta->images_embeds = NULL;
+  }
+
+  embeds_meta->width = 0;
+  embeds_meta->height = 0;
+}
+
 void CVI_TDL_FreeCpp(cvtdl_seg_t *seg_ann) {
   free(seg_ann->class_id);
   free(seg_ann->class_conf);
@@ -210,7 +258,11 @@ void CVI_TDL_FreeClassMeta(cvtdl_class_meta_t *cls_meta) { CVI_TDL_FreeCpp(cls_m
 
 void CVI_TDL_FreeLane(cvtdl_lane_t *lane_meta) { CVI_TDL_FreeCpp(lane_meta); }
 
+void CVI_TDL_FreeSeg(cvtdl_seg_t *seg_ann) { CVI_TDL_FreeCpp(seg_ann); }
+
 void CVI_TDL_FreeClip(cvtdl_clip_feature *clip_meta) { CVI_TDL_FreeCpp(clip_meta); }
+void CVI_TDL_FreeTokens(cvtdl_tokens *tokens_meta) { CVI_TDL_FreeCpp(tokens_meta); }
+void CVI_TDL_FreeImageEmbeds(cvtdl_image_embeds *embeds_meta) { CVI_TDL_FreeCpp(embeds_meta); }
 // Copy
 
 void CVI_TDL_CopyInfoCpp(const cvtdl_face_info_t *info, cvtdl_face_info_t *infoNew) {
@@ -449,8 +501,15 @@ void CVI_TDL_CopyImage(const cvtdl_image_t *src_image, cvtdl_image_t *dst_image)
   dst_image->pix[0] = (uint8_t *)malloc(image_size);
   memcpy(dst_image->pix[0], src_image->pix[0], image_size);
   // copy full image to dst image
-  dst_image->full_length = src_image->full_length;
-  dst_image->full_img = (uint8_t *)malloc(src_image->full_length);
+
+  if (dst_image->full_length != src_image->full_length) {
+    if (dst_image->full_img != NULL) {
+      free(dst_image->full_img);
+      dst_image->full_img = NULL;
+    }
+    dst_image->full_img = (uint8_t *)malloc(src_image->full_length);
+    dst_image->full_length = src_image->full_length;
+  }
   memcpy(dst_image->full_img, src_image->full_img, src_image->full_length);
   for (int i = 0; i < 3; i++) {
     dst_image->stride[i] = src_image->stride[i];

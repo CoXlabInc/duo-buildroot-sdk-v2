@@ -138,6 +138,11 @@ endif
 
 UBOOT_CVI_BOARD_INIT_PATH := ${UBOOT_PATH}/board/cvitek/cvi_board_init.c
 UBOOT_CVITEK_PATH := ${UBOOT_PATH}/include/cvitek/cvitek.h
+ifeq ($(CONFIG_BOOT_IMAGE_SINGLE_DTB), y)
+	BOARD_DTS_SEARCH_PATH = ${BUILD_PATH}/boards/${CHIP_ARCH_L}/${PROJECT_FULLNAME}
+else
+	BOARD_DTS_SEARCH_PATH = ${BUILD_PATH}/boards/${CHIP_ARCH_L}
+endif
 
 u-boo%: export KBUILD_OUTPUT=${UBOOT_PATH}/${UBOOT_OUTPUT_FOLDER}
 ifeq ($(CONFIG_UBOOT_FASTBOOT),y)
@@ -148,6 +153,8 @@ u-boo%: export RELEASE=${RELEASE_VERSION}
 endif
 u-boo%: export CVIBOARD=${BOARD}
 u-boo%: export CONFIG_SKIP_RAMDISK:=${CONFIG_SKIP_RAMDISK}
+u-boo%: export CONFIG_ENABLE_EMMC_HW_RESET_QFN:=${CONFIG_ENABLE_EMMC_HW_RESET_QFN}
+u-boo%: export CONFIG_ENABLE_EMMC_SET_RESET_OTP:=${CONFIG_ENABLE_EMMC_SET_RESET_OTP}
 u-boo%: export CONFIG_USE_DEFAULT_ENV:=${CONFIG_USE_DEFAULT_ENV}
 u-boo%: export MULTI_FIP=$(if ${CONFIG_MULTI_FIP},1,0)
 u-boo%: export CROSS_COMPILE=$(patsubst "%",%,$(CONFIG_CROSS_COMPILE))
@@ -163,12 +170,12 @@ u-boot-dts:
 ifeq ($(UBOOT_SRC), u-boot-2021.10)
 # U-boot doesn't has arch/arm64
 ifeq ($(ARCH), arm64)
-	${Q}find ${BUILD_PATH}/boards/${CHIP_ARCH_L} \
+	${Q}find ${BOARD_DTS_SEARCH_PATH}  \
 		\( -path "*linux/*.dts*" -o -path "*dts_${ARCH}/*.dts*" \) \
 		-exec cp {} ${UBOOT_PATH}/arch/arm/dts/ \;
 	${Q}find ${DTS_DEFATUL_PATHS} -name *.dts* -exec cp {} ${UBOOT_PATH}/arch/arm/dts/ \;
 else
-	${Q}find ${BUILD_PATH}/boards/${CHIP_ARCH_L} \
+	${Q}find ${BOARD_DTS_SEARCH_PATH}  \
 		\( -path "*linux/*.dts*" -o -path "*dts_${ARCH}/*.dts*" \) \
 		-exec cp {} ${UBOOT_PATH}/arch/${ARCH}/dts/ \;
 	${Q}find ${DTS_DEFATUL_PATHS} -name *.dts* -exec cp {} ${UBOOT_PATH}/arch/${ARCH}/dts/ \;
@@ -301,6 +308,10 @@ ifneq (${CONFIG_SUSPEND},y)
 	${Q}$(MAKE) -j${NPROC} -C ${KERNEL_PATH} O=${KERNEL_PATH}/${KERNEL_OUTPUT_FOLDER} setconfig 'SCRIPT_ARG="SUSPEND=n"'
 	${Q}$(MAKE) -j${NPROC} -C ${KERNEL_PATH} O=${KERNEL_PATH}/${KERNEL_OUTPUT_FOLDER} savedefconfig
 endif
+ifeq (${CONFIG_ENABLE_EMMC_HW_RESET_QFN},y)
+	${Q}$(MAKE) -j${NPROC} -C ${KERNEL_PATH} O=${KERNEL_PATH}/${KERNEL_OUTPUT_FOLDER} setconfig 'SCRIPT_ARG="ENABLE_EMMC_HW_RESET_QFN=y"'
+	${Q}$(MAKE) -j${NPROC} -C ${KERNEL_PATH} O=${KERNEL_PATH}/${KERNEL_OUTPUT_FOLDER} savedefconfig
+endif
 	${Q}$(MAKE) -j${NPROC} -C ${KERNEL_PATH} O=${KERNEL_PATH}/${KERNEL_OUTPUT_FOLDER} olddefconfig
 	${Q}$(MAKE) -j${NPROC} -C ${KERNEL_PATH}/${KERNEL_OUTPUT_FOLDER} Image modules
 	${Q}$(MAKE) -j${NPROC} -C ${KERNEL_PATH}/${KERNEL_OUTPUT_FOLDER} modules_install headers_install INSTALL_HDR_PATH=${KERNEL_PATH}/${KERNEL_OUTPUT_FOLDER}/$(ARCH)/usr
@@ -321,7 +332,7 @@ kernel-dts: ${KERNEL_PATH}/${KERNEL_OUTPUT_FOLDER}
 	${Q}ln -snrf ${CVI_BOARD_MEMMAP_H_PATH} ${KERNEL_PATH}/scripts/dtc/include-prefixes/
 	${Q}find ${KERNEL_PATH}/arch/${ARCH}/boot/dts/${BRAND}/ -type l -delete
 	${Q}find ${DTS_DEFATUL_PATHS} -name *.dts* -exec ln -sf {} ${KERNEL_PATH}/arch/${ARCH}/boot/dts/${BRAND}/ \;
-	${Q}find ${BUILD_PATH}/boards/${CHIP_ARCH_L} \
+	${Q}find ${BOARD_DTS_SEARCH_PATH} \
 		\( -path "*linux/*.dts*" -o -path "*dts_${ARCH}/*.dts*" \) \
 		-exec ln -sf {} ${KERNEL_PATH}/arch/${ARCH}/boot/dts/${BRAND}/ \;
 	${Q}$(MAKE) -j${NPROC} -C ${KERNEL_PATH}/${KERNEL_OUTPUT_FOLDER} dtbs
@@ -592,8 +603,19 @@ endif
 	${Q}mkdir -p $(BR_OVERLAY_DIR)
 	${Q}cp -arf $(BR_ROOTFS_DIR)/* $(BR_OVERLAY_DIR)
 
-br-rootfs-pack:export TARGET_OUTPUT_DIR=$(BR_DIR)/output/$(BR_BOARD)
-br-rootfs-pack:
+BR_TARGET_OUTPUT_DIR=$(BR_DIR)/output/$(BR_BOARD)
+
+$(BR_DIR)/output/$(BR_BOARD)/.config:
+	$(call print_target)
+	${Q}$(MAKE) -C $(BR_DIR) $(BR_DEFCONFIG) BR2_TOOLCHAIN_EXTERNAL_PATH=$(CROSS_COMPILE_PATH) TARGET_OUTPUT_DIR=$(BR_TARGET_OUTPUT_DIR)
+
+br-menuconfig: $(BR_DIR)/output/$(BR_BOARD)/.config
+	${Q}$(MAKE) -C $(BR_DIR) menuconfig BR2_TOOLCHAIN_EXTERNAL_PATH=$(CROSS_COMPILE_PATH) TARGET_OUTPUT_DIR=$(BR_TARGET_OUTPUT_DIR)
+	${Q}$(MAKE) -C $(BR_DIR) savedefconfig BR2_TOOLCHAIN_EXTERNAL_PATH=$(CROSS_COMPILE_PATH) TARGET_OUTPUT_DIR=$(BR_TARGET_OUTPUT_DIR)
+
+
+br-rootfs-pack:export TARGET_OUTPUT_DIR=$(BR_TARGET_OUTPUT_DIR)
+br-rootfs-pack: 
 	$(call print_target)
 	${Q}$(MAKE) -C $(BR_DIR) $(BR_DEFCONFIG) BR2_TOOLCHAIN_EXTERNAL_PATH=$(CROSS_COMPILE_PATH)
 	${Q}$(BR_DIR)/utils/brmake -j${NPROC} -C $(BR_DIR)
@@ -628,7 +650,7 @@ ifeq ($(CONFIG_BUILDROOT_FS),y)
 	${Q}rm -rf $(OUTPUT_DIR)/br-rootfs
 	${Q}ln -s $(OUTPUT_DIR)/br-rootfs $(OUTPUT_DIR)/fs
 	${Q}mkdir $(OUTPUT_DIR)/br-rootfs
-	${Q}tar xvf $(BR_DIR)/output/$(BR_BOARD)/images/rootfs.tar.xz -C $(OUTPUT_DIR)/br-rootfs
+	${Q}tar xf $(BR_DIR)/output/$(BR_BOARD)/images/rootfs.tar.xz -C $(OUTPUT_DIR)/br-rootfs
 else
 	${Q}ln -s $(OUTPUT_DIR)/rootfs $(OUTPUT_DIR)/fs
 endif
