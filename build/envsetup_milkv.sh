@@ -622,9 +622,9 @@ function build_morsemicro()
     if [ ! -f wpa_supplicant/.config ]; then
         cp wpa_supplicant/defconfig wpa_supplicant/.config
     fi
-    export MM_BUILD_STAGING=$TOP_DIR/buildroot-2024.02/output/milkv-duo256m-musl-riscv64-sd/host/riscv64-buildroot-linux-musl/sysroot
+    export MM_BUILD_STAGING=$TOP_DIR/buildroot/output/milkv-duo256m-musl-riscv64-sd/host/riscv64-buildroot-linux-musl/sysroot
     CC=riscv64-unknown-linux-musl-gcc\
-      CROSS_COMPILE=$TOP_DIR/buildroot-2024.02/output/milkv-duo256m-musl-riscv64-sd/host/bin/riscv64-unknown-linux-musl-\
+      CROSS_COMPILE=$TOP_DIR/buildroot/output/milkv-duo256m-musl-riscv64-sd/host/bin/riscv64-unknown-linux-musl-\
       PKG_CONFIG_PATH="$MM_BUILD_STAGING/usr/lib/pkgconfig"\
       PKG_CONFIG_LIBDIR="$MM_BUILD_STAGING/usr/lib/pkgconfig"\
       PKG_CONFIG_SYSROOT_DIR="$MM_BUILD_STAGING"\
@@ -640,9 +640,9 @@ function build_morsemicro()
     if [ ! -f hostapd/.config ]; then
         cp hostapd/defconfig hostapd/.config
     fi
-    export MM_BUILD_STAGING=$TOP_DIR/buildroot-2024.02/output/milkv-duo256m-musl-riscv64-sd/host/riscv64-buildroot-linux-musl/sysroot
+    export MM_BUILD_STAGING=$TOP_DIR/buildroot/output/milkv-duo256m-musl-riscv64-sd/host/riscv64-buildroot-linux-musl/sysroot
     CC=riscv64-unknown-linux-musl-gcc\
-      CROSS_COMPILE=$TOP_DIR/buildroot-2024.02/output/milkv-duo256m-musl-riscv64-sd/host/bin/riscv64-unknown-linux-musl-\
+      CROSS_COMPILE=$TOP_DIR/buildroot/output/milkv-duo256m-musl-riscv64-sd/host/bin/riscv64-unknown-linux-musl-\
       PKG_CONFIG_PATH="$MM_BUILD_STAGING/usr/lib/pkgconfig"\
       PKG_CONFIG_LIBDIR="$MM_BUILD_STAGING/usr/lib/pkgconfig"\
       PKG_CONFIG_SYSROOT_DIR="$MM_BUILD_STAGING"\
@@ -657,9 +657,9 @@ function build_morsemicro()
     popd
 
     pushd morsectrl_rel_1_14_1_2024_Dec_05
-    export MM_BUILD_STAGING=$TOP_DIR/buildroot-2024.02/output/milkv-duo256m-musl-riscv64-sd/host/riscv64-buildroot-linux-musl/sysroot
+    export MM_BUILD_STAGING=$TOP_DIR/buildroot/output/milkv-duo256m-musl-riscv64-sd/host/riscv64-buildroot-linux-musl/sysroot
     CC=riscv64-unknown-linux-musl-gcc\
-      CROSS_COMPILE=$TOP_DIR/buildroot-2024.02/output/milkv-duo256m-musl-riscv64-sd/host/bin/riscv64-unknown-linux-musl-\
+      CROSS_COMPILE=$TOP_DIR/buildroot/output/milkv-duo256m-musl-riscv64-sd/host/bin/riscv64-unknown-linux-musl-\
       PKG_CONFIG_PATH="$MM_BUILD_STAGING/usr/lib/pkgconfig"\
       PKG_CONFIG_LIBDIR="$MM_BUILD_STAGING/usr/lib/pkgconfig"\
       PKG_CONFIG_SYSROOT_DIR="$MM_BUILD_STAGING"\
