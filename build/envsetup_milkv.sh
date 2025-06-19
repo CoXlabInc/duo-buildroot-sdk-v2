@@ -412,7 +412,7 @@ function build_tdl_sdk()
     cp -a "${TDL_SDK_PATH}"/install/bin/sample_* "${SYSTEM_OUT_DIR}"/usr/bin/ai/
   fi
 
-  cp -a "${TDL_SDK_PATH}"/install/lib/libcvi_tdl.so "${SYSTEM_OUT_DIR}"/lib/
+  cp -a "${TDL_SDK_PATH}"/install/lib/libcvi_*.so "${SYSTEM_OUT_DIR}"/lib/
 }
 
 function clean_tdl_sdk()
