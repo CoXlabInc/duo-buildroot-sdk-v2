@@ -749,8 +749,6 @@ function build_all()
     fi
     build_pqtool_server || return $?
   fi
-  build_morsemicro || return $?
-  pack_morsemicro || return $?
   pack_cfg || return $?
   pack_rootfs || return $?
   pack_data || return $?

@@ -16,6 +16,7 @@ The built image is located at `out/milkv-duo256m-musl-riscv64-sd-*.img`
 Select `3. milkv-duo256m-musl-riscv64-sd` (once at first build)
 ```
 cd duo-buildroot-sdk/
+export FORCE_UNSAFE_CONFIGURE=1
 source build/envsetup_milkv.sh
 clean_all
 build_all
@@ -30,6 +31,7 @@ The built image is located at `install/soc_sg2002_milkv_duo256m_musl_riscv64_sd/
 Select `3. milkv-duo256m-musl-riscv64-sd`
 ```
 cd duo-buildroot-sdk/
+export FORCE_UNSAFE_CONFIGURE=1
 source build/envsetup_milkv.sh
 ```
 
