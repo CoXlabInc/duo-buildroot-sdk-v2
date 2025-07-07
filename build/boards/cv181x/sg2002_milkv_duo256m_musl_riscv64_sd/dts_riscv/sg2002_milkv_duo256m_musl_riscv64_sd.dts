@@ -61,7 +61,7 @@
 
 	mm6108_sdio: mm6108_sdio@0 {
 		compatible = "morse,mm610x";
-		reset-gpios = <&porta 22 GPIO_ACTIVE_LOW>;
+		reset-gpios = <&porta 22 GPIO_ACTIVE_HIGH>;
 		power-gpios = <&porta 24 GPIO_ACTIVE_HIGH>, <&porta 23 GPIO_ACTIVE_HIGH>;
 		status = "okay";
 		reg = <2>;
@@ -72,5 +72,5 @@
 &wifi_pin {
 	compatible = "cvitek,wifi-pin";
 /*	poweron-gpio = <&porta 22 GPIO_ACTIVE_LOW>;*/
-	wakeup-gpio = <&porta 24 GPIO_ACTIVE_HIGH>;
+/*	wakeup-gpio = <&porta 24 GPIO_ACTIVE_HIGH>;*/
 };
