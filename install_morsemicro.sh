@@ -37,7 +37,6 @@ cp -v wpa_supplicant.conf /etc/wpa_supplicant/
 
 echo "📜 Installing runtime scripts..."
 cp -v resize.sh /root/
-cp -v start-halow.sh /root/
 
 echo "📡 Installing firmware..."
 mkdir -p /lib/firmware/
