@@ -19,7 +19,6 @@ cp hostap/wpa_supplicant/wpa_passphrase_s1g "$PACKAGE_DIR"/
 cp hostap/wpa_supplicant/wpa_supplicant.conf "$PACKAGE_DIR"/
 
 cp runtime-scripts/resize.sh "$PACKAGE_DIR"/
-cp runtime-scripts/start-halow.sh "$PACKAGE_DIR"/
 
 cp hostap/hostapd/hostapd_s1g "$PACKAGE_DIR"/
 cp hostap/hostapd/hostapd_cli_s1g "$PACKAGE_DIR"/
