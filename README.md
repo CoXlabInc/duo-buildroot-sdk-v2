@@ -64,9 +64,18 @@ cd buildroot/output/milkv-duo256m-musl-riscv64-sd/build/ffmpeg-6.1.2
 rm .stamp_*
 ```
 And move back to `duo-buildroot-sdk-v2/`. Then rebuild.
+
 ```
 cd ../../../..
 pack_rootfs
 pack_sd_iamge
 ```
 The built image is located at install/soc_sg2002_milkv_duo256m_musl_riscv64_sd/milkv-duo256m-musl-riscv64-sd.img
+
+## Clean the rootfs
+
+If you want to rebuild the rootfs, remove the `install` directory, and `make distclean` in the buildroot.
+```
+rm -rf install
+(cd buildroot/output/milkv-duo256m-musl-riscv64-sd; make distclean)
+```
