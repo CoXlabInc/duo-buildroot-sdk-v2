@@ -12,6 +12,10 @@
 	snsr-reset = <&portc 17 GPIO_ACTIVE_LOW>, <&portc 17 GPIO_ACTIVE_LOW>, <&portc 17 GPIO_ACTIVE_LOW>;
 };
 
+&mipi_tx {
+	status = "disabled";
+};
+
 &i2c0 {
 	status = "disabled";
 };
@@ -71,6 +75,8 @@
 
 &wifi_pin {
 	compatible = "cvitek,wifi-pin";
+
 /*	poweron-gpio = <&porta 22 GPIO_ACTIVE_LOW>;*/
 /*	wakeup-gpio = <&porta 24 GPIO_ACTIVE_HIGH>;*/
+	status = "disabled";
 };
