@@ -35,9 +35,6 @@ echo "📄 Installing configuration files..."
 mkdir -p /etc/wpa_supplicant
 cp -v wpa_supplicant.conf /etc/wpa_supplicant/
 
-echo "📜 Installing runtime scripts..."
-cp -v resize.sh /root/
-
 echo "📡 Installing firmware..."
 mkdir -p /lib/firmware/
 cp -v *.bin /lib/firmware/
