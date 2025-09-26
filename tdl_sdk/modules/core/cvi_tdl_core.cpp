@@ -216,22 +216,28 @@ unordered_map<int, CreatorFunc> MODEL_CREATORS = {
     {CVI_TDL_SUPPORTED_MODEL_FACERECOGNITION, CREATOR_P1(FaceAttribute, bool, false)},
     {CVI_TDL_SUPPORTED_MODEL_OCCLUSION_CLASSIFICATION, CREATOR(OcclusionClassification)},
 
-    {CVI_TDL_SUPPORTED_MODEL_HAND_DETECTION,
+    {CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS1,
      CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 1))},
-    {CVI_TDL_SUPPORTED_MODEL_PERSON_PETS_DETECTION,
-     CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 3))},
-    {CVI_TDL_SUPPORTED_MODEL_YOLOV8_DETECTION,
-     CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 80))},
-    {CVI_TDL_SUPPORTED_MODEL_YOLOV11_DETECTION,
-     CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 80))},
-    {CVI_TDL_SUPPORTED_MODEL_PERSON_VEHICLE_DETECTION,
-     CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 7))},
-    {CVI_TDL_SUPPORTED_MODEL_HAND_FACE_PERSON_DETECTION,
-     CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 3))},
-    {CVI_TDL_SUPPORTED_MODEL_HEAD_PERSON_DETECTION,
+    {CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2,
      CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 2))},
+    {CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3,
+     CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 3))},
+    {CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS4,
+     CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 4))},
+    {CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS5,
+     CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 4))},
+    {CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS6,
+     CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 6))},
+    {CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS7,
+     CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 7))},
+    {CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS8,
+     CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 8))},
+    {CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS9,
+     CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 9))},
     {CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS10,
      CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 10))},
+    {CVI_TDL_SUPPORTED_MODEL_YOLOV8_DETECTION,
+     CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 80))},
     {CVI_TDL_SUPPORTED_MODEL_MOBILEDETV2_COCO80,
      CREATOR_P1(MobileDetV2, MobileDetV2::Category, MobileDetV2::Category::coco80)},
     {CVI_TDL_SUPPORTED_MODEL_MOBILEDETV2_PERSON_VEHICLE,
@@ -242,10 +248,6 @@ unordered_map<int, CreatorFunc> MODEL_CREATORS = {
      CREATOR_P1(MobileDetV2, MobileDetV2::Category, MobileDetV2::Category::pedestrian)},
     {CVI_TDL_SUPPORTED_MODEL_MOBILEDETV2_PERSON_PETS,
      CREATOR_P1(MobileDetV2, MobileDetV2::Category, MobileDetV2::Category::person_pets)},
-    {CVI_TDL_SUPPORTED_MODEL_YOLOV8_HARDHAT,
-     CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 2))},
-    {CVI_TDL_SUPPORTED_MODEL_YOLOV8_FIRE_SMOKE,
-     CREATOR_P1(YoloV8Detection, PAIR_INT, std::make_pair(64, 2))},
     {CVI_TDL_SUPPORTED_MODEL_LANE_DET, CREATOR(BezierLaneNet)},
 
     {CVI_TDL_SUPPORTED_MODEL_LSTR, CREATOR(LSTR)},
@@ -1161,17 +1163,17 @@ CVI_S32 CVI_TDL_Detection(const cvitdl_handle_t handle, VIDEO_FRAME_INFO_S *fram
       CVI_TDL_SUPPORTED_MODEL_YOLOV6,
       CVI_TDL_SUPPORTED_MODEL_YOLOV7,
       CVI_TDL_SUPPORTED_MODEL_YOLOV8_DETECTION,
-      CVI_TDL_SUPPORTED_MODEL_YOLOV11_DETECTION,
-      CVI_TDL_SUPPORTED_MODEL_YOLOV8_HARDHAT,
-      CVI_TDL_SUPPORTED_MODEL_YOLOV8_FIRE_SMOKE,
+      CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS1,
+      CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2,
+      CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3,
+      CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS4,
+      CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS5,
+      CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS7,
+      CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS8,
+      CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS9,
       CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS10,
       CVI_TDL_SUPPORTED_MODEL_YOLOX,
       CVI_TDL_SUPPORTED_MODEL_PPYOLOE,
-      CVI_TDL_SUPPORTED_MODEL_HAND_DETECTION,
-      CVI_TDL_SUPPORTED_MODEL_PERSON_PETS_DETECTION,
-      CVI_TDL_SUPPORTED_MODEL_PERSON_VEHICLE_DETECTION,  // TODO:need class mapping
-      CVI_TDL_SUPPORTED_MODEL_HAND_FACE_PERSON_DETECTION,
-      CVI_TDL_SUPPORTED_MODEL_HEAD_PERSON_DETECTION,
       CVI_TDL_SUPPORTED_MODEL_THERMALPERSON,
       CVI_TDL_SUPPORTED_MODEL_MOBILEDETV2_COCO80,
       CVI_TDL_SUPPORTED_MODEL_MOBILEDETV2_PERSON_VEHICLE,
@@ -1882,13 +1884,13 @@ CVI_S32 CVI_TDL_Copy_VideoFrameToImage(VIDEO_FRAME_INFO_S *f, cvtdl_image_t *p_d
   for (int i = 0; i < 3; i++) {
     if ((p_dst->pix[i] == 0 && f->stVFrame.pu8VirAddr[i] != 0) ||
         (p_dst->pix[i] != 0 && f->stVFrame.pu8VirAddr[i] == 0)) {
-      LOGE("error,plane:%d,dst_addr:%p,video_frame_addr:%p\n", i, p_dst->pix[i],
+      printf("error,plane:%d,dst_addr:%p,video_frame_addr:%p\n", i, p_dst->pix[i],
            f->stVFrame.pu8VirAddr[i]);
       ret = CVI_FAILURE;
       break;
     }
     if (f->stVFrame.u32Length[i] > p_dst->length[i]) {
-      LOGE("size overflow,plane:%d,dst_len:%u,video_frame_len:%u\n", i, p_dst->length[i],
+      printf("size overflow,plane:%d,dst_len:%u,video_frame_len:%u\n", i, p_dst->length[i],
            f->stVFrame.u32Length[i]);
       ret = CVI_FAILURE;
       break;
@@ -1956,14 +1958,14 @@ CVI_S32 CVI_TDL_PersonVehicle_Detection(const cvitdl_handle_t handle, VIDEO_FRAM
                                         cvtdl_object_t *obj_meta) {
   cvitdl_context_t *ctx = static_cast<cvitdl_context_t *>(handle);
   YoloV8Detection *yolo_model = dynamic_cast<YoloV8Detection *>(
-      getInferenceInstance(CVI_TDL_SUPPORTED_MODEL_PERSON_VEHICLE_DETECTION, ctx));
+      getInferenceInstance(CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS7, ctx));
   if (yolo_model == nullptr) {
     LOGE("No instance found for CVI_TDL_PersonVehicle_Detection.\n");
     return CVI_FAILURE;
   }
   LOGI("got yolov8 instance\n");
   if (yolo_model->isInitialized()) {
-    if (initVPSSIfNeeded(ctx, CVI_TDL_SUPPORTED_MODEL_PERSON_VEHICLE_DETECTION) != CVI_SUCCESS) {
+    if (initVPSSIfNeeded(ctx, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS7) != CVI_SUCCESS) {
       return CVI_TDL_ERR_INIT_VPSS;
     } else {
       int ret = yolo_model->inference(frame, obj_meta);
@@ -1985,7 +1987,7 @@ CVI_S32 CVI_TDL_PersonVehicle_Detection(const cvitdl_handle_t handle, VIDEO_FRAM
     }
   } else {
     LOGE("Model (%s)is not yet opened! Please call CVI_TDL_OpenModel to initialize model\n",
-         CVI_TDL_GetModelName(CVI_TDL_SUPPORTED_MODEL_PERSON_VEHICLE_DETECTION));
+         CVI_TDL_GetModelName(CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS7));
     return CVI_TDL_ERR_NOT_YET_INITIALIZED;
   }
 }

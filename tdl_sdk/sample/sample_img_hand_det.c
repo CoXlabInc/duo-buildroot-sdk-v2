@@ -48,8 +48,8 @@ int main(int argc, char *argv[]) {
   }
 
   printf("---------------------openmodel-----------------------------\n");
-  ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_HAND_DETECTION, argv[1]);
-  CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_HAND_DETECTION, 0.5);
+  ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS1, argv[1]);
+  CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS1, 0.5);
   if (ret != CVI_SUCCESS) {
     printf("open model failed with %#x!\n", ret);
     return ret;
@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
   printf("---------------------to do detection-----------------------\n");
 
   cvtdl_object_t obj_meta = {0};
-  CVI_TDL_Detection(tdl_handle, &bg, CVI_TDL_SUPPORTED_MODEL_HAND_DETECTION, &obj_meta);
+  CVI_TDL_Detection(tdl_handle, &bg, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS1, &obj_meta);
 
   printf("objnum:%u\n", obj_meta.size);
   printf("boxes=[");
@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
   if (eval_perf) {
     for (int i = 0; i < 101; i++) {
       cvtdl_object_t obj_meta = {0};
-      CVI_TDL_Detection(tdl_handle, &bg, CVI_TDL_SUPPORTED_MODEL_HAND_DETECTION, &obj_meta);
+      CVI_TDL_Detection(tdl_handle, &bg, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS1, &obj_meta);
       CVI_TDL_Free(&obj_meta);
     }
   }

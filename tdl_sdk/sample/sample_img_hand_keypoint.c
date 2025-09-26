@@ -13,12 +13,12 @@ double __get_us(struct timeval t) { return (t.tv_sec * 1000000 + t.tv_usec); }
 void run_hand_detection(cvitdl_handle_t tdl_handle, const char *model_path,
                         VIDEO_FRAME_INFO_S *p_frame, cvtdl_object_t *obj_meta) {
   printf("---------------------to do detection-----------------------\n");
-  CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_HAND_DETECTION, model_path);
-  CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_HAND_DETECTION, 0.5);
+  CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS1, model_path);
+  CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS1, 0.5);
 
   struct timeval start_time, stop_time;
   gettimeofday(&start_time, NULL);
-  CVI_TDL_Detection(tdl_handle, p_frame, CVI_TDL_SUPPORTED_MODEL_HAND_DETECTION, obj_meta);
+  CVI_TDL_Detection(tdl_handle, p_frame, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS1, obj_meta);
   gettimeofday(&stop_time, NULL);
   printf("CVI_TDL_Hand_Detection Time use %f ms\n",
          (__get_us(stop_time) - __get_us(start_time)) / 1000);

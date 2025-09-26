@@ -202,7 +202,7 @@ CVI_S32 _PersonCapture_QuickSetUp(cvitdl_handle_t tdl_handle, person_capture_t *
   } else if (strcmp(od_model_name, "yolov3") == 0) {
     person_cpt_info->od_model_index = CVI_TDL_SUPPORTED_MODEL_YOLOV3;
   } else if (strcmp(od_model_name, "yolov8") == 0) {
-    person_cpt_info->od_model_index = CVI_TDL_SUPPORTED_MODEL_HEAD_PERSON_DETECTION;
+    person_cpt_info->od_model_index = CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2;
   } else {
     return CVI_TDL_FAILURE;
   }
@@ -383,7 +383,7 @@ CVI_S32 _ConsumerCounting_Run(person_capture_t *person_cpt_info, const cvitdl_ha
     }
   }
 #endif
-  if (person_cpt_info->od_model_index == CVI_TDL_SUPPORTED_MODEL_HEAD_PERSON_DETECTION) {
+  if (person_cpt_info->od_model_index == CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2) {
     if (CVI_TDL_SUCCESS != CVI_TDL_DeepSORT_Head_FusePed(
                                tdl_handle, &person_cpt_info->last_objects,
                                &person_cpt_info->last_trackers, person_cpt_info->enable_DeepSORT,

@@ -131,14 +131,14 @@ int main(int argc, char *argv[]) {
   if (model_init == 0) {
     std::cout << "to init vehicle model" << std::endl;
     std::string str_vehicle_model = g_model_root;
-    ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_PERSON_VEHICLE_DETECTION,
+    ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS7,
                             str_vehicle_model.c_str());
     if (ret != CVI_SUCCESS) {
       std::cout << "open model failed:" << str_vehicle_model << std::endl;
       return -1;
     }
-    CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_PERSON_VEHICLE_DETECTION, 0.6);
-    CVI_TDL_SetSkipVpssPreprocess(tdl_handle, CVI_TDL_SUPPORTED_MODEL_PERSON_VEHICLE_DETECTION,
+    CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS7, 0.6);
+    CVI_TDL_SetSkipVpssPreprocess(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS7,
                                   true);
     model_init = 1;
   }

@@ -50,8 +50,8 @@ int main(int argc, char *argv[]) {
   }
 
   printf("---------------------openmodel-----------------------");
-  ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_PERSON_VEHICLE_DETECTION, argv[1]);
-  CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_PERSON_VEHICLE_DETECTION, 0.1);
+  ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS7, argv[1]);
+  CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS7, 0.1);
   if (ret != CVI_SUCCESS) {
     printf("open model failed with %#x!\n", ret);
     return ret;

@@ -83,12 +83,12 @@ std::map<std::string, ModelProcess> process_info = {
   {"yolov5", {CVI_TDL_SUPPORTED_MODEL_YOLOV5, common_object_detection}},
   {"yolov8", {CVI_TDL_SUPPORTED_MODEL_YOLOV8_DETECTION, common_object_detection}},
   {"yolov10", {CVI_TDL_SUPPORTED_MODEL_YOLOV10_DETECTION, common_object_detection}},
-  {"fire_smoke", {CVI_TDL_SUPPORTED_MODEL_YOLOV8_FIRE_SMOKE, common_object_detection}},
-  {"hand", {CVI_TDL_SUPPORTED_MODEL_HAND_DETECTION, common_object_detection}},
-  {"person_pet", {CVI_TDL_SUPPORTED_MODEL_PERSON_PETS_DETECTION, common_object_detection}},
-  {"person_vehicle", {CVI_TDL_SUPPORTED_MODEL_PERSON_VEHICLE_DETECTION, common_object_detection}},
-  {"hand_face_person", {CVI_TDL_SUPPORTED_MODEL_HAND_FACE_PERSON_DETECTION, common_object_detection}},
-  {"head_person", {CVI_TDL_SUPPORTED_MODEL_HEAD_PERSON_DETECTION, common_object_detection}},
+  {"fire_smoke", {CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2, common_object_detection}},
+  {"hand", {CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS1, common_object_detection}},
+  {"person_pet", {CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3, common_object_detection}},
+  {"person_vehicle", {CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS7, common_object_detection}},
+  {"hand_face_person", {CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3, common_object_detection}},
+  {"head_person", {CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2, common_object_detection}},
   {"mobiledetv2_pedestrian", {CVI_TDL_SUPPORTED_MODEL_MOBILEDETV2_PEDESTRIAN, common_object_detection}},
 
   // face detection

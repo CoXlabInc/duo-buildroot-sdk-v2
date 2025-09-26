@@ -23,7 +23,7 @@ bool CompareFileNames(std::string a, std::string b) { return a < b; }
 CVI_S32 init_param(const cvitdl_handle_t tdl_handle) {
   // setup preprocess
   InputPreParam preprocess_cfg =
-      CVI_TDL_GetPreParam(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_HARDHAT);
+      CVI_TDL_GetPreParam(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2);
 
   for (int i = 0; i < 3; i++) {
     printf("asign val %d \n", i);
@@ -34,7 +34,7 @@ CVI_S32 init_param(const cvitdl_handle_t tdl_handle) {
 
   printf("setup yolov8 param \n");
   CVI_S32 ret =
-      CVI_TDL_SetPreParam(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_HARDHAT, preprocess_cfg);
+      CVI_TDL_SetPreParam(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2, preprocess_cfg);
   if (ret != CVI_SUCCESS) {
     printf("Can not set yolov8 preprocess parameters %#x\n", ret);
     return ret;
@@ -42,11 +42,11 @@ CVI_S32 init_param(const cvitdl_handle_t tdl_handle) {
 
   // setup yolo algorithm preprocess
   cvtdl_det_algo_param_t yolov8_param =
-      CVI_TDL_GetDetectionAlgoParam(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_HARDHAT);
+      CVI_TDL_GetDetectionAlgoParam(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2);
   yolov8_param.cls = 2;
 
   printf("setup yolov8 algorithm param \n");
-  ret = CVI_TDL_SetDetectionAlgoParam(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_HARDHAT,
+  ret = CVI_TDL_SetDetectionAlgoParam(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2,
                                       yolov8_param);
   if (ret != CVI_SUCCESS) {
     printf("Can not set yolov8 algorithm parameters %#x\n", ret);
@@ -86,14 +86,14 @@ int main(int argc, char *argv[]) {
   ret = init_param(tdl_handle);
 
   printf("---------------------openmodel-----------------------");
-  ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_HARDHAT, argv[1]);
+  ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2, argv[1]);
   if (ret != CVI_SUCCESS) {
     printf("open model failed with %#x!\n", ret);
     return ret;
   }
   // set theshold
-  CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_HARDHAT, 0.01);
-  CVI_TDL_SetModelNmsThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_HARDHAT, 0.5);
+  CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2, 0.01);
+  CVI_TDL_SetModelNmsThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2, 0.5);
 
   printf("yolov8 algorithm parameters setup success!\n");
   printf("---------------------to do detection-----------------------\n");
@@ -136,7 +136,7 @@ int main(int argc, char *argv[]) {
     }
     std::string str_res;
     cvtdl_object_t obj_meta = {0};
-    CVI_TDL_Detection(tdl_handle, &rgb_frame, CVI_TDL_SUPPORTED_MODEL_YOLOV8_HARDHAT, &obj_meta);
+    CVI_TDL_Detection(tdl_handle, &rgb_frame, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2, &obj_meta);
     std::cout << "objnum:" << obj_meta.size << std::endl;
     for (uint32_t i = 0; i < obj_meta.size; i++) {
       outfile << obj_meta.info[i].classes << ' ' << obj_meta.info[i].bbox.x1 << " "

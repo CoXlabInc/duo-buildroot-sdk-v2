@@ -38,7 +38,7 @@ void bench_mark_all(std::string bench_path, std::string image_root, std::string 
         auto img_path = image_root + image_name;
         CVI_TDL_ReadImage(img_handle, img_path.c_str(), &fdFrame, PIXEL_FORMAT_RGB_888_PLANAR);
         CVI_S32 ret = CVI_TDL_Detection(tdl_handle, &fdFrame,
-                                        CVI_TDL_SUPPORTED_MODEL_PERSON_PETS_DETECTION, &obj_meta);
+                                        CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3, &obj_meta);
         if (ret != CVI_SUCCESS) {
           CVI_TDL_Free(&obj_meta);
           CVI_TDL_ReleaseImage(img_handle, &fdFrame);
@@ -99,12 +99,12 @@ int main(int argc, char* argv[]) {
     nms_threshold = std::stof(argv[6]);
   }
 
-  ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_PERSON_PETS_DETECTION,
+  ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3,
                           model_path.c_str());
   // set conf threshold and nms threshold
-  CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_PERSON_PETS_DETECTION,
+  CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3,
                             conf_threshold);
-  CVI_TDL_SetModelNmsThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_PERSON_PETS_DETECTION,
+  CVI_TDL_SetModelNmsThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3,
                                nms_threshold);
 
   if (ret != CVI_SUCCESS) {

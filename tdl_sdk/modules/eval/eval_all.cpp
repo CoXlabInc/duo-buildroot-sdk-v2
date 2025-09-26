@@ -26,9 +26,9 @@ std::string run_image_hand_detection(VIDEO_FRAME_INFO_S *p_frame, cvitdl_handle_
     std::cout << "to init hand model\t";
     std::string str_hand_model = g_model_root + std::string("/") + model_name;
 
-    ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_HAND_DETECTION,
+    ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS1,
                             str_hand_model.c_str());
-    CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_HAND_DETECTION, 0.01);
+    CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS1, 0.01);
     if (ret != CVI_SUCCESS) {
       std::cout << "open model failed:" << str_hand_model << std::endl;
       return "";
@@ -40,7 +40,7 @@ std::string run_image_hand_detection(VIDEO_FRAME_INFO_S *p_frame, cvitdl_handle_
   cvtdl_object_t hand_obj = {0};
 
   memset(&hand_obj, 0, sizeof(cvtdl_object_t));
-  ret = CVI_TDL_Detection(tdl_handle, p_frame, CVI_TDL_SUPPORTED_MODEL_HAND_DETECTION, &hand_obj);
+  ret = CVI_TDL_Detection(tdl_handle, p_frame, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS1, &hand_obj);
   if (ret != CVI_SUCCESS) {
     std::cout << "detect hand failed:" << ret << std::endl;
   }
@@ -104,9 +104,9 @@ std::string run_image_pet_detection(VIDEO_FRAME_INFO_S *p_frame, cvitdl_handle_t
     std::cout << "to init hand model\t";
     std::string str_hand_model = g_model_root + std::string("/") + model_name;
 
-    ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_PERSON_PETS_DETECTION,
+    ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3,
                             str_hand_model.c_str());
-    CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_PERSON_PETS_DETECTION, 0.01);
+    CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3, 0.01);
     if (ret != CVI_SUCCESS) {
       std::cout << "open model failed:" << str_hand_model << std::endl;
       return "";
@@ -118,7 +118,7 @@ std::string run_image_pet_detection(VIDEO_FRAME_INFO_S *p_frame, cvitdl_handle_t
   cvtdl_object_t hand_obj = {0};
   memset(&hand_obj, 0, sizeof(cvtdl_object_t));
 
-  ret = CVI_TDL_Detection(tdl_handle, p_frame, CVI_TDL_SUPPORTED_MODEL_PERSON_PETS_DETECTION,
+  ret = CVI_TDL_Detection(tdl_handle, p_frame, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3,
                           &hand_obj);
   if (ret != CVI_SUCCESS) {
     std::cout << "detect hand failed:" << ret << std::endl;
@@ -144,14 +144,14 @@ std::string run_image_vehicle_detection(VIDEO_FRAME_INFO_S *p_frame, cvitdl_hand
     std::cout << "to init vehicle model\t";
     std::string str_hand_model = g_model_root + std::string("/") + model_name;
 
-    ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_PERSON_VEHICLE_DETECTION,
+    ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS7,
                             str_hand_model.c_str());
-    CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_PERSON_VEHICLE_DETECTION, 0.01);
+    CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS7, 0.01);
     if (ret != CVI_SUCCESS) {
       std::cout << "open vehicle model failed:" << str_hand_model << std::endl;
       return "";
     }
-    CVI_TDL_SetSkipVpssPreprocess(tdl_handle, CVI_TDL_SUPPORTED_MODEL_PERSON_VEHICLE_DETECTION,
+    CVI_TDL_SetSkipVpssPreprocess(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS7,
                                   true);
     std::cout << "init vehicle model done\t";
     model_init = 1;
@@ -185,9 +185,9 @@ std::string run_image_face_hand_person_detection(VIDEO_FRAME_INFO_S *p_frame,
     std::cout << "to init vehicle model\t";
     std::string str_hand_model = g_model_root + std::string("/") + model_name;
 
-    ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_HAND_FACE_PERSON_DETECTION,
+    ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3,
                             str_hand_model.c_str());
-    CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_HAND_FACE_PERSON_DETECTION, 0.01);
+    CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3, 0.01);
     if (ret != CVI_SUCCESS) {
       std::cout << "open vehicle model failed:" << str_hand_model << std::endl;
       return "";
@@ -199,7 +199,7 @@ std::string run_image_face_hand_person_detection(VIDEO_FRAME_INFO_S *p_frame,
   cvtdl_object_t hand_obj = {0};
   memset(&hand_obj, 0, sizeof(cvtdl_object_t));
 
-  ret = CVI_TDL_Detection(tdl_handle, p_frame, CVI_TDL_SUPPORTED_MODEL_HAND_FACE_PERSON_DETECTION,
+  ret = CVI_TDL_Detection(tdl_handle, p_frame, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3,
                           &hand_obj);
   if (ret != CVI_SUCCESS) {
     std::cout << "detect vehicle failed:" << ret << std::endl;

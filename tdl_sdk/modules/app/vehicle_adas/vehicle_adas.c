@@ -559,7 +559,7 @@ CVI_S32 _ADAS_Run(adas_info_t *adas_info, const cvitdl_handle_t tdl_handle,
 
   if (CVI_SUCCESS != CVI_TDL_Detection(tdl_handle, frame, CVI_TDL_SUPPORTED_MODEL_YOLOV8_DETECTION,
                                        &adas_info->last_objects)) {
-    // CVI_TDL_Release_VideoFrame(tdl_handle, CVI_TDL_SUPPORTED_MODEL_PERSON_VEHICLE_DETECTION,
+    // CVI_TDL_Release_VideoFrame(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS7,
     // frame,
     //  true);
     printf("PersonVehicle detection failed\n");

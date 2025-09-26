@@ -49,8 +49,8 @@ int main(int argc, char *argv[]) {
   }
 
   printf("---------------------openmodel-----------------------");
-  ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_HAND_FACE_PERSON_DETECTION, argv[1]);
-  CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_HAND_FACE_PERSON_DETECTION, 0.1);
+  ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3, argv[1]);
+  CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS8, 0.1);
   if (ret != CVI_SUCCESS) {
     printf("open model failed with %#x!\n", ret);
     return ret;
@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
 
   std::string str_res;
   cvtdl_object_t obj_meta = {0};
-  CVI_TDL_Detection(tdl_handle, &bg, CVI_TDL_SUPPORTED_MODEL_HAND_FACE_PERSON_DETECTION, &obj_meta);
+  CVI_TDL_Detection(tdl_handle, &bg, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3, &obj_meta);
 
   std::cout << "objnum:" << obj_meta.size << std::endl;
   std::stringstream ss;
@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
   if (eval_perf) {
     for (int i = 0; i < 101; i++) {
       cvtdl_object_t obj_meta = {0};
-      CVI_TDL_Detection(tdl_handle, &bg, CVI_TDL_SUPPORTED_MODEL_HAND_FACE_PERSON_DETECTION,
+      CVI_TDL_Detection(tdl_handle, &bg, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3,
                         &obj_meta);
       CVI_TDL_Free(&obj_meta);
     }

@@ -256,7 +256,7 @@ CVI_S32 _PersonVehicleCapture_QuickSetUp(cvitdl_handle_t tdl_handle,
   if (strcmp(od_model_name, "yolov3") == 0) {
     personvehicle_cpt_info->od_model_index = CVI_TDL_SUPPORTED_MODEL_YOLOV3;
   } else if (strcmp(od_model_name, "yolov8") == 0) {
-    personvehicle_cpt_info->od_model_index = CVI_TDL_SUPPORTED_MODEL_PERSON_VEHICLE_DETECTION;
+    personvehicle_cpt_info->od_model_index = CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS7;
   } else {
     return CVI_TDL_FAILURE;
   }

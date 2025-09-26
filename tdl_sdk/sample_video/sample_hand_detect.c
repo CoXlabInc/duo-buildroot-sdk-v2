@@ -90,7 +90,7 @@ void *run_tdl_thread(void *pHandle) {
       goto get_frame_failed;
     }
 
-    s32Ret = CVI_TDL_Detection(pstTDLHandle, &stFrame, CVI_TDL_SUPPORTED_MODEL_HAND_DETECTION,
+    s32Ret = CVI_TDL_Detection(pstTDLHandle, &stFrame, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS1,
                                &stHandMeta);
     if (s32Ret != CVI_TDL_SUCCESS) {
       printf("inference failed!, ret=%x\n", s32Ret);
@@ -262,12 +262,12 @@ int main(int argc, char *argv[]) {
   cvitdl_service_handle_t stServiceHandle = NULL;
   GOTO_IF_FAILED(CVI_TDL_Service_CreateHandle(&stServiceHandle, stTDLHandle), s32Ret,
                  create_service_fail);
-  GOTO_IF_FAILED(CVI_TDL_OpenModel(stTDLHandle, CVI_TDL_SUPPORTED_MODEL_HAND_DETECTION, argv[1]),
+  GOTO_IF_FAILED(CVI_TDL_OpenModel(stTDLHandle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS1, argv[1]),
                  s32Ret, setup_tdl_fail);
   GOTO_IF_FAILED(
       CVI_TDL_OpenModel(stTDLHandle, CVI_TDL_SUPPORTED_MODEL_HANDCLASSIFICATION, argv[2]), s32Ret,
       setup_tdl_fail);
-  CVI_TDL_SetModelThreshold(stTDLHandle, CVI_TDL_SUPPORTED_MODEL_HAND_DETECTION, 0.55);
+  CVI_TDL_SetModelThreshold(stTDLHandle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS1, 0.55);
   pthread_t stVencThread, stTDLThread;
   SAMPLE_TDL_VENC_THREAD_ARG_S args = {
       .pstMWContext = &stMWContext,

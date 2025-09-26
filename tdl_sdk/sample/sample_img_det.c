@@ -29,19 +29,19 @@ CVI_S32 get_od_model_info(char *model_name, CVI_TDL_SUPPORTED_MODEL_E *model_ind
   } else if (strcmp(model_name, "yolov10") == 0) {
     *model_index = CVI_TDL_SUPPORTED_MODEL_YOLOV10_DETECTION;
   } else if (strcmp(model_name, "yolov8-hardhat") == 0) {
-    *model_index = CVI_TDL_SUPPORTED_MODEL_YOLOV8_HARDHAT;
+    *model_index = CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2;
   } else if (strcmp(model_name, "fire-smoke") == 0) {
-    *model_index = CVI_TDL_SUPPORTED_MODEL_YOLOV8_FIRE_SMOKE;
+    *model_index = CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2;
   } else if (strcmp(model_name, "hand") == 0) {
-    *model_index = CVI_TDL_SUPPORTED_MODEL_HAND_DETECTION;
+    *model_index = CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS1;
   } else if (strcmp(model_name, "person-pet") == 0) {
-    *model_index = CVI_TDL_SUPPORTED_MODEL_PERSON_PETS_DETECTION;
+    *model_index = CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3;
   } else if (strcmp(model_name, "person-vehicle") == 0) {
-    *model_index = CVI_TDL_SUPPORTED_MODEL_PERSON_VEHICLE_DETECTION;
+    *model_index = CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS7;
   } else if (strcmp(model_name, "hand-face-person") == 0) {
-    *model_index = CVI_TDL_SUPPORTED_MODEL_HAND_FACE_PERSON_DETECTION;
+    *model_index = CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS3;
   } else if (strcmp(model_name, "head-person") == 0) {
-    *model_index = CVI_TDL_SUPPORTED_MODEL_HEAD_PERSON_DETECTION;
+    *model_index = CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2;
   } else if (strcmp(model_name, "mobiledetv2-coco80") == 0) {
     *model_index = CVI_TDL_SUPPORTED_MODEL_MOBILEDETV2_COCO80;
   } else if (strcmp(model_name, "mobiledetv2-vehicle") == 0) {

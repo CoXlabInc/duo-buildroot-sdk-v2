@@ -29,9 +29,9 @@ std::string run_image_headperson_detection(VIDEO_FRAME_INFO_S *p_frame, cvitdl_h
     std::cout << "to init headperson model\t";
     std::string str_hand_model = g_model_root + std::string("/") + model_name;
 
-    ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_HEAD_PERSON_DETECTION,
+    ret = CVI_TDL_OpenModel(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2,
                             str_hand_model.c_str());
-    CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_HEAD_PERSON_DETECTION, 0.01);
+    CVI_TDL_SetModelThreshold(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2, 0.01);
     if (ret != CVI_SUCCESS) {
       std::cout << "open model failed:" << str_hand_model << std::endl;
       return "";
@@ -44,7 +44,7 @@ std::string run_image_headperson_detection(VIDEO_FRAME_INFO_S *p_frame, cvitdl_h
   memset(&hand_obj, 0, sizeof(cvtdl_object_t));
   struct timeval start_time, stop_time;
   gettimeofday(&start_time, NULL);
-  ret = CVI_TDL_Detection(tdl_handle, p_frame, CVI_TDL_SUPPORTED_MODEL_HEAD_PERSON_DETECTION,
+  ret = CVI_TDL_Detection(tdl_handle, p_frame, CVI_TDL_SUPPORTED_MODEL_YOLOV8_CLASS2,
                           &hand_obj);
   if (ret != CVI_SUCCESS) {
     std::cout << "detect headperson failed:" << ret << std::endl;
