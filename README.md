@@ -24,7 +24,25 @@ pack_sd_image
 ```
 The built image is located at `install/soc_sg2002_milkv_duo256m_musl_riscv64_sd/milkv-duo256m-musl-riscv64-sd.img`
 
+## Kernel build
 
+Select `3. milkv-duo256m-musl-riscv64-sd`
+```
+cd duo-buildroot-sdk/
+export FORCE_UNSAFE_CONFIGURE=1
+source build/envsetup_milkv.sh
+```
+
+You can config the kernel as below:
+```
+menuconfig_kernel
+```
+
+You can save the modified defconfig by using manual copy as below:
+```
+cp ${KERNEL_SRC}/build/${PROJECT_FULLNAME}/defconfig \
+   ${BUILD_PATH}/boards/${CHIP_ARCH,,}/${PROJECT_FULLNAME}/linux/${BRAND}_${PROJECT_FULLNAME}_defconfig
+```
 
 ## Add packages after full build
 
