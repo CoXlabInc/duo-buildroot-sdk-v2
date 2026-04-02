@@ -24,6 +24,15 @@
 	status = "disabled";
 };
 
+&i2c2 {
+	status = "okay";
+
+	rtc@51 {
+		compatible = "nxp,pcf8563";
+		reg = <0x51>;
+	};
+};
+
 &spi2 {
 	status = "disabled";
 
