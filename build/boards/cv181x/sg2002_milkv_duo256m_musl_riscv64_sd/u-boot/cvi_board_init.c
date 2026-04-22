@@ -56,6 +56,16 @@ int cvi_board_init(void)
 	PINMUX_CONFIG(ADC1, XGPIOB_3);             // GP26 (ADC1)
 	PINMUX_CONFIG(USB_VBUS_DET, XGPIOB_6);     // GP27 (ADC2)
 
+	// Ethernet pins set to GPIO
+	PINMUX_CONFIG(PAD_ETH_TXP, XGPIOB_25);     // GP30
+	PINMUX_CONFIG(PAD_ETH_TXM, XGPIOB_24);     // GP31
+	PINMUX_CONFIG(PAD_ETH_RXP, XGPIOB_23);     // GP32
+	PINMUX_CONFIG(PAD_ETH_RXM, XGPIOB_26);     // GP33
+
+	// Force EPHY Shutdown to avoid analog interference
+	mmio_write_32(0x03009804, 0x0001); // Select APB interface
+	mmio_write_32(0x03009800, 0x0001); // Shutdown EPHY
+
 	set_rtc_register_for_power();
 
 	return 0;

@@ -47,12 +47,8 @@
 	};
 };
 
-&spi1 {
-	status = "okay";
-
-	spidev@0 {
-		spi-max-frequency = <10000000>;
-	};
+&ethernet0 {
+	status = "disabled";
 };
 
 &dac {
