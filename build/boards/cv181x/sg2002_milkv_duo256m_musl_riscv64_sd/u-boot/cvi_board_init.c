@@ -59,7 +59,7 @@ int cvi_board_init(void)
 	// Ethernet pins set to GPIO
 	PINMUX_CONFIG(PAD_ETH_TXP, XGPIOB_25);     // GP30
 	PINMUX_CONFIG(PAD_ETH_TXM, XGPIOB_24);     // GP31
-	PINMUX_CONFIG(PAD_ETH_RXP, XGPIOB_23);     // GP32
+	PINMUX_CONFIG(PAD_ETH_RXP, XGPIOB_27);     // GP32
 	PINMUX_CONFIG(PAD_ETH_RXM, XGPIOB_26);     // GP33
 
 	// Force EPHY Shutdown to avoid analog interference
