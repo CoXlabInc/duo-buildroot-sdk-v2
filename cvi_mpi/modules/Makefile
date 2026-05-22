@@ -14,7 +14,7 @@ all:
 	@echo "#    "CROSS_COMPILE=$(CROSS_COMPILE)
 	@echo "#"
 	@echo "########################################################################################################"
-	@$(foreach dir,$(SUB_DIRS), \
+	+@$(foreach dir,$(SUB_DIRS), \
 		if test -d $(dir) ; then \
 			cd $(dir);$(MAKE) all || exit 1;cd -; \
 		else \
@@ -22,7 +22,7 @@ all:
 		fi;)
 
 clean:
-	@$(foreach dir,$(SUB_DIRS), \
+	+@$(foreach dir,$(SUB_DIRS), \
 		if test -d $(dir) ; then \
 			cd $(dir);$(MAKE) clean || exit 1;cd -; \
 		else \
@@ -30,7 +30,7 @@ clean:
 		fi;)
 
 clean_all:
-	@$(foreach dir,$(SUB_DIRS), \
+	+@$(foreach dir,$(SUB_DIRS), \
 		if test -d $(dir) ; then \
 			cd $(dir);$(MAKE) clean_all || exit 1;cd -; \
 		else \

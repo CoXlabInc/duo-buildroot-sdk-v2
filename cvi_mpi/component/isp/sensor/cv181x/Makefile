@@ -12,13 +12,11 @@ sensor-y := $(filter-out Makefile Makefile_full, $(notdir $(wildcard $(CURDIR)/*
 endif
 
 define MAKE_SENSOR
-	pushd $(1) && \
-	$(MAKE) all && \
-	popd
+	+$(MAKE) -C $(1) all
 endef
 
 .PHONY : prepare clean $(sensor-y)
-all: prepare $(sensor-y) all_sensor
+all: prepare all_sensor
 
 prepare:
 	@echo "#################################################"
@@ -343,11 +341,10 @@ lontium_lt6911:
 lontium_lt7911:
 	$(call MAKE_SENSOR, ${@})
 
-all_sensor:
-	@$(MAKE) -f Makefile_full || exit 1;
+all_sensor: $(sensor-y)
+	+$(MAKE) -f Makefile_full
 
 clean:
-	@for x in `find ./ -maxdepth 2 -mindepth 2 -name "Makefile" `; \
-	    do cd `dirname $$x`; if [ $$? ]; then $(MAKE) clean; cd -; fi; done
+	+$(MAKE) -C $(sensor-y) clean
 	@echo "#"
-	@$(MAKE) clean -f Makefile_full || exit 1;
+	+$(MAKE) clean -f Makefile_full
