@@ -1,0 +1,20 @@
+services:
+  duodocker:
+    image: milkvtech/milkv-duo:latest
+    platform: linux/amd64
+    privileged: true
+    container_name: duodocker
+    environment:
+      - FORCE_UNSAFE_CONFIGURE=1
+    volumes:
+      - .:/home/duo-buildroot
+      - ../host-tools:/home/duo-buildroot/host-tools
+      - duo_buildroot_output:/home/duo-buildroot/buildroot/output
+      - duo_install_data:/home/duo-buildroot/install
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+
+volumes:
+  duo_buildroot_output:
+  duo_install_data:

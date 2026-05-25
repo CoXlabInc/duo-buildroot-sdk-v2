@@ -37,6 +37,7 @@ pushd ${output_dir}
 genimage --config ${TOP_DIR}/device/${MV_BOARD}/genimage.cfg --rootpath fs/ --inputpath ${PWD} --outputpath ${PWD}
 if [ $? -eq 0 ]; then
     echo "gnimage for ${MV_BOARD} success!"
+    mkdir -p /home/duo-buildroot/out && cp *.img /home/duo-buildroot/out/ 2>/dev/null || true
 else
     echo "gnimage for ${MV_BOARD} failed!"
 fi
