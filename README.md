@@ -2,6 +2,15 @@
 
 For more detailed documentation, please refer to: [https://milkv.io/docs/duo/getting-started/buildroot-sdk](https://milkv.io/docs/duo/getting-started/buildroot-sdk)
 
+## Docker
+
+```
+docker compose up -d
+docker compose exec duodocker /bin/bash
+```
+
+All `build.sh` commands described below should be run inside the container.
+
 # How to build
 
 ## One-click full build
